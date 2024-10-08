@@ -1,4 +1,5 @@
 use std::io;
+use ratatui::termion;
 use termion::event::Key;
 use termion::input::MouseTerminal;
 use termion::raw::IntoRawMode;
@@ -13,7 +14,7 @@ use ratatui::Terminal;
 use crate::{App, AppView};
 use crate::views;
 
-type FinalTerminal = ratatui::terminal::Terminal<
+type FinalTerminal = ratatui::Terminal<
                      ratatui::backend::TermionBackend<
                      termion::screen::AlternateScreen<
                      termion::input::MouseTerminal<
@@ -56,7 +57,7 @@ pub fn draw_frame<T: ratatui::backend::Backend>(terminal: &mut ratatui::Terminal
             .direction(Direction::Vertical)
             .margin(1)
             .constraints(vec![Constraint::Length(3), Constraint::Length(1), Constraint::Min(0)])
-            .split(f.size());
+            .split(f.area());
 
         Tabs::new(["Sink Inputs", "Source Output", "Sinks", "Sources", "Cards"])
             .block(Block::bordered().title(" Tabs "))
@@ -83,7 +84,7 @@ impl Widget for ClearingWidget {
     fn render(self, area: ratatui::layout::Rect, buf: &mut ratatui::buffer::Buffer) {
         for x in area.left()..area.right() {
             for y in area.top()..area.bottom() {
-                buf.get_mut(x, y).set_symbol(" ");
+                buf[(x, y)].set_symbol(" ");
             }
         }
     }

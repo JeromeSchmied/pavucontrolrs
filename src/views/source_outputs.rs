@@ -1,4 +1,4 @@
-use termion::event::Key;
+use ratatui::termion::event::Key;
 use ratatui::backend::TermionBackend;
 use ratatui::layout::{Constraint, Direction, Layout, Rect, Margin};
 use ratatui::style::{Color, Modifier, Style};
@@ -43,7 +43,7 @@ pub fn entered(app: &mut App) {
     app.source_output_view_data.close_keybinding_popup();
 }
 
-pub fn draw(frame: &mut ratatui::terminal::Frame, rect: Rect, app: &mut App) {
+pub fn draw(frame: &mut ratatui::Frame, rect: Rect, app: &mut App) {
 
     let mut constraints = vec![Constraint::Length(3); app.source_output_list. filtered_len(
         |x| !((x.source_index == 0xffffffff || app.source_list.get(x.source_index).map(|x| x.is_monitor()).unwrap_or(false)) && app.hide_monitors)
@@ -106,14 +106,14 @@ pub fn draw(frame: &mut ratatui::terminal::Frame, rect: Rect, app: &mut App) {
     }
 }
 
-pub fn draw_source_popup(frame: &mut ratatui::terminal::Frame, rect: Rect, app: &mut App) {
+pub fn draw_source_popup(frame: &mut ratatui::Frame, rect: Rect, app: &mut App) {
 
     let focused_stream = match app.source_output_list.get_selected() {
         None => { app.source_output_view_data.close_source_popup(); return; },
         Some(x) => x,
     };
 
-    let rect = rect.inner(&Margin::new(4, 4));
+    let rect = rect.inner(Margin::new(4, 4));
     crate::draw::ClearingWidget::default()
         .render(rect, frame.buffer_mut());
 
@@ -141,7 +141,7 @@ pub fn draw_source_popup(frame: &mut ratatui::terminal::Frame, rect: Rect, app: 
         }
 }
 
-pub fn draw_keybinding_popup(frame: &mut ratatui::terminal::Frame, rect: Rect, app: &mut App) {
+pub fn draw_keybinding_popup(frame: &mut ratatui::Frame, rect: Rect, app: &mut App) {
 
     let keys = vec![
         ( "F1 through F5", "Change tab"),
@@ -160,7 +160,7 @@ pub fn draw_keybinding_popup(frame: &mut ratatui::terminal::Frame, rect: Rect, a
         ( "ctrl-k", "Kill all non-running streams"),
     ];
 
-    let rect = rect.inner(&Margin::new(4, 4));
+    let rect = rect.inner(Margin::new(4, 4));
     crate::draw::ClearingWidget::default()
         .render(rect, frame.buffer_mut());
 

@@ -1,4 +1,4 @@
-use termion::event::Key;
+use ratatui::termion::event::Key;
 use ratatui::backend::TermionBackend;
 use ratatui::layout::{Constraint, Direction, Layout, Rect, Margin};
 use ratatui::style::{Color, Modifier, Style};
@@ -33,7 +33,7 @@ pub fn entered(app: &mut App) {
     app.sink_view_data.close_keybinding_popup();
 }
 
-pub fn draw(frame: &mut ratatui::terminal::Frame, rect: Rect, app: &mut App) {
+pub fn draw(frame: &mut ratatui::Frame, rect: Rect, app: &mut App) {
 
     let mut constraints = vec![Constraint::Length(3); app.sink_list.len()];
     constraints.push(Constraint::Min(0));
@@ -79,7 +79,7 @@ pub fn draw(frame: &mut ratatui::terminal::Frame, rect: Rect, app: &mut App) {
     }
 }
 
-pub fn draw_keybinding_popup(frame: &mut ratatui::terminal::Frame, rect: Rect, app: &mut App) {
+pub fn draw_keybinding_popup(frame: &mut ratatui::Frame, rect: Rect, app: &mut App) {
 
     let keys = vec![
         ( "F1 through F5", "Change tab"),
@@ -96,7 +96,7 @@ pub fn draw_keybinding_popup(frame: &mut ratatui::terminal::Frame, rect: Rect, a
         ( "D", "Unload owner module (remove sink)"),
     ];
 
-    let rect = rect.inner(&Margin::new(4, 4));
+    let rect = rect.inner(Margin::new(4, 4));
     crate::draw::ClearingWidget::default()
         .render(rect, frame.buffer_mut());
 

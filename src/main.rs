@@ -26,6 +26,7 @@ use pulse::error::PAErr;
 use pulse::context::subscribe::{Facility, Operation, InterestMaskSet};
 use pulse::volume::{VolumeLinear, ChannelVolumes};
 
+use ratatui::termion;
 use termion::event::Key;
 use termion::input::TermRead;
 
